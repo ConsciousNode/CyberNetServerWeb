@@ -1,0 +1,25 @@
+<!DOCTYPE html><html><body><script src="studionet-ref.js"></script><script>
+// Kehai's E2E client: the reference speaks SRRP to CyberNetServerWeb over BroadcastChannel.
+const R = StudioNetRef, ME = 0x0301, SERVER = 0x00FD;
+const bc = new BroadcastChannel('studionet-v1');
+let conv = null;
+bc.onmessage = (ev) => {
+  const raw = ev.data && (ev.data.frame || ev.data.bytes || ev.data); let u8;
+  try { u8 = raw instanceof Uint8Array ? raw : raw instanceof ArrayBuffer ? new Uint8Array(raw) : Array.isArray(raw) ? Uint8Array.from(raw) : (raw && raw.data ? Uint8Array.from(raw.data) : null); } catch (e) { return; }
+  if (!u8) return; const f = R.decodeFrame(u8); if (!f.ok || f.dst !== ME || !conv) return;
+  if (f.proto === 3 && (f.flags & R.FLAG.ACK) && !(f.flags & R.FLAG.PSH)) for (const o of conv.s.onAck(f, performance.now())) send(o);
+  else if (f.proto === 3 && (f.flags & R.FLAG.PSH)) for (const o of conv.r.onData(f)) send(o);
+};
+let SENDFMT = 'u8';
+function send(fr) { bc.postMessage(SENDFMT === 'u8' ? fr : Array.from(fr)); }
+window.request = (msgBytes, port) => new Promise((res) => {
+  const s = new R.Sender({ src: ME, dst: SERVER, sport: port, dport: 80, message: msgBytes, startSeq: 1000, rto: 300 });
+  const r = new R.Receiver({ me: ME, window: 16, maxSize: 4 << 20 });
+  conv = { s, r }; const t0 = performance.now();
+  const iv = setInterval(() => {
+    for (const o of s.poll(performance.now())) send(o);
+    if (r.state === 'done') { clearInterval(iv); res({ ok: true, msg: Array.from(r.message), ms: performance.now() - t0 }); }
+    if (performance.now() - t0 > 20000) { clearInterval(iv); res({ ok: false, state: s.state }); }
+  }, 10);
+});
+</script></body></html>
