@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 ConsciousNode
+Copyright (c) 2026 Khamerron Edward Ramsey Kizer (Kham), Kehai Interim, ConsciousNode SoftWorks
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+Note on MiniPedia Content Separation:
+- Built-in MiniPedia studio articles (`minipedia-cnsw.json`, stored in IndexedDB `minipedia_mit`) are written by Kehai Interim, ConsciousNode SoftWorks, and licensed under the MIT License above.
+- Any Wikipedia abstract dump (`*-abstract.xml`) imported by the operator at runtime is licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0), attributed on every page as "Text from Wikipedia, CC BY-SA 4.0" with its source URL, and stored/exported in a separate IndexedDB store (`minipedia_wiki`) so the licenses never mix.

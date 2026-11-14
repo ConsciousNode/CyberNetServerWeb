@@ -1,0 +1,43 @@
+================================================================
+CyberNetServerWeb — Full 10-Suite Verification Harness
+================================================================
+PASS [9] 9a strict CSP meta tag present
+PASS [9] 9b no network APIs except BroadcastChannel — BroadcastChannel only
+PASS [9] 9c storage only through IndexedDB
+PASS [9] 9d studionet-ref.js not present in server page
+PASS [9] 9e all 10 inline lifted blocks labeled and SHA-256 byte-identical to source — 10/10 blocks matched
+PASS [1] 1a Golden produce vectors (7/7 field & byte exact) — 7/7
+PASS [1] 1b Golden parse vectors (5/5 accept/reject exact) — 5/5
+PASS [1] 1c Golden SRRP vectors & server responses (6/6) — 6/6
+PASS [1] 1d Golden multi-frame SACK transfer vectors (2/2) — 2/2
+PASS [1] 1e Golden naming vectors (5/5) — 5/5
+PASS [1] 1f Golden SNB1 bridge envelope vector (1/1)
+PASS [2] 2a Differential PUT/LIST/GET/DEL 1KB (1024 B) over fault-injecting BroadcastChannel — byte-identical=true, dropped=0, dups=0, reordered=15, resends=2, timeouts=1
+PASS [2] 2a Differential PUT/LIST/GET/DEL 64KB (65536 B) over fault-injecting BroadcastChannel — byte-identical=true, dropped=18, dups=10, reordered=284, resends=32, timeouts=21
+PASS [2] 2a Differential PUT/LIST/GET/DEL 1MB (1048576 B) over fault-injecting BroadcastChannel — byte-identical=true, dropped=116, dups=114, reordered=2645, resends=737, timeouts=2
+PASS [2] 2b Differential POST /minipedia/search over fault-injecting BroadcastChannel
+PASS [2] 2c Positive control: 100% frame loss gives TIMEOUT on client — state=TIMEOUT, timeouts=6
+PASS [2] 2d Positive control: oversize PUT gives 413 TOO BIG at the first frame before body — status=413, clientFramesSent=1
+PASS [2] 2e Positive control: ../x path traversal gives 403 FORBIDDEN — status=403
+PASS [2] 2f Positive control: zeroed SACK bitmap still completes but requires more resends — with SACK resends=9 (timeouts=5) vs zeroed SACK resends=25 (timeouts=9)
+PASS [3] 3a Two server tabs come up as cnsw1 and cnsw2 in join order — tab1=cnsw1, tab2=cnsw2
+PASS [4] 4a Monkey-patching Vanta layout (+1 px box shift) changes snapshot
+PASS [4] 4b Monkey-patching Vanta parser (dropping 1 element) changes projection accordingly
+PASS [4] 4c Page with CSS-only differences produces different snapshots but identical projection
+PASS [5] 5a /snap?fmt=spiral bytes equal Convergence gateway lift byte-for-byte (15,360 B) — bytes=15360
+PASS [5] 5b /snap?fmt=t3 returns Type: image/t3-snap, 160x100 u16 header, and 16,000 trytes16 in -364..+364 (32,004 B) — bytes=32004
+PASS [6] 6a All 15 built-in MIT MiniPedia articles served with byline — 15/15 served
+PASS [6] 6b MiniPedia search ranks exact title match first
+PASS [6] 6c 1,000-article synthetic dump streaming import honors cap, shows CC BY-SA 4.0 + URL on every page, and MIT export has 0 imported articles — imported=1000, mitExport=15 (0 wiki), wikiExport=1000
+PASS [7] 7a With no model loaded, /chat says "No model loaded."
+PASS [7] 7b Tiny random GGUF model generates tokens, polling returns them in order, and concurrent request gets 503 BUSY — tokens=[62731,64748,56898,20589,59313,52273], 2ndStatus=503 BUSY (Retry-After: 1)
+PASS [7] 7c Model info shown on /chat matches GGUF file header exactly — name=tiny-rwkv7-test-v1, nParams=8447360, quant=F32
+PASS [7] 7d Lifted RWKV-7 engine SHA-256 matches pips-room.html:1331-2075 — sha256=a2cbb55b6974d14e848330e7b90790e94e616ab9ef8dd1197118b59ef675bc0a
+PASS [8] 8a Files round trip at 1 B, 480 B, and 1 MB (1,048,576 B) — ["1B:true","480B:true","1048576B:true"]
+PASS [8] 8b Total storage quota exceeded returns 507 FULL
+PASS [8] 8c Extension whitelist MIME types enforced and uploaded .html served as raw data (never rendered)
+PASS [10] 10a Real browser loads cybernetserverweb.html with 0 page/console errors — pageErrors=0, consoleErrors=0
+PASS [10] 10b Server (0x00FD) and two reference client tabs (0x0101, 0x0201) all see each other in peers — serverPeers=[{"node":257,"name":"tabcomp"},{"node":513,"name":"hummingbird"}], peer1Peers=[{"node":513,"name":"hummingbird"},{"node":253,"name":"cnsw1"}], peer2Peers=[{"node":253,"name":"cnsw1"},{"node":257,"name":"tabcomp"}]
+================================================================
+SUMMARY: 37/37 PASS (0 FAIL)
+================================================================
